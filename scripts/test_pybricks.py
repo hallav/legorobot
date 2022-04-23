@@ -14,7 +14,7 @@ async def main():
     print('hub connected:', hub.connected)
     
     
-    await hub.run('mvp_test.py')
+    await hub.run('../programs/mvp_test.py')
     
     await hub.disconnect()
 
