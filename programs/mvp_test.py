@@ -2,6 +2,9 @@
 This program is for MVP's basic "Buggy" mode.
 Follow the corresponding building instructions in the LEGO® MINDSTORMS®
 Robot Inventor App.
+
+Original script in pybricks-projects:
+sets/mindstorms-robot-inventor/main-models/mvp/mvp-basic.py
 """
 
 from pybricks.pupdevices import Motor, UltrasonicSensor
