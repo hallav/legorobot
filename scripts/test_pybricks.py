@@ -19,5 +19,5 @@ async def main():
     await hub.disconnect()
 
 if __name__ == "__main__":
-    logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+    logging.basicConfig(stream=sys.stdout, level=logging.ERROR)
     asyncio.run(main())

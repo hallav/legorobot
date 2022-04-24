@@ -32,13 +32,20 @@ distance_sensor = UltrasonicSensor(Port.E)
 mvp.steer_motor.run_angle(speed=350, rotation_angle=-50)
 mvp.drive_motor.run(speed=800) #, rotation_angle=32 * 360)
 
-timer = StopWatch()
-timeout = 30 * 1000 # ms
+timer_timeout = StopWatch()
+timeout = 15 * 1000 # ms
 
-while timer.time() < timeout:
+timer_data = StopWatch()
+interval = 1 * 1000 # ms
+
+while timer_timeout.time() < timeout:
     if distance_sensor.distance() < 100:
         distance_sensor.lights.on(100)
         mvp.drive_motor.stop()
     else:
         distance_sensor.lights.off()
         mvp.drive_motor.run(speed=800)
+
+    if timer_data.time() > interval:
+        print('distance:', distance_sensor.distance(), 'mm')
+        timer_data.reset()
