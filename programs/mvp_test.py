@@ -10,6 +10,7 @@ sets/mindstorms-robot-inventor/main-models/mvp/mvp-basic.py
 from pybricks.pupdevices import Motor, UltrasonicSensor
 from pybricks.parameters import Direction, Port
 from pybricks.tools import wait, StopWatch
+from pybricks.hubs import InventorHub
 
 
 class MVP:
@@ -17,6 +18,7 @@ class MVP:
         self.steer_motor = Motor(Port.A)
         self.drive_motor = Motor(Port.B,
                                  positive_direction=Direction.COUNTERCLOCKWISE)
+        self.hub = InventorHub()
 
     def calibrate(self):
         self.steer_motor.run_target(speed=1000, target_angle=-20)
@@ -48,4 +50,5 @@ while timer_timeout.time() < timeout:
 
     if timer_data.time() > interval:
         print('distance:', distance_sensor.distance(), 'mm')
+        print('acceleration:', mvp.hub.imu.acceleration(), 'm/s**2')
         timer_data.reset()

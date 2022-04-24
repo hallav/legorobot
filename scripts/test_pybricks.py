@@ -4,10 +4,11 @@ from pybricksdev.ble import find_device #, nus
 import logging
 import sys
 import asyncio
+from contextlib import redirect_stdout
 
 async def main():
     address = await find_device('Pybricks Hub')
-    print(address)
+    #print(address)
 
     hub = PybricksHub()
     await hub.connect(address)
@@ -19,5 +20,7 @@ async def main():
     await hub.disconnect()
 
 if __name__ == "__main__":
-    logging.basicConfig(stream=sys.stdout, level=logging.ERROR)
-    asyncio.run(main())
+    with open('mvp_data.log', 'w') as file:
+        with redirect_stdout(file):
+            logging.basicConfig(stream=sys.stderr, level=logging.ERROR)
+            asyncio.run(main())
