@@ -35,10 +35,10 @@ mvp.steer_motor.run_angle(speed=350, rotation_angle=-50)
 mvp.drive_motor.run(speed=800) #, rotation_angle=32 * 360)
 
 timer_timeout = StopWatch()
-timeout = 15 * 1000 # ms
+timeout = 30 * 1000 # ms
 
 timer_data = StopWatch()
-interval = 1 * 1000 # ms
+interval = 0.1 * 1000 # ms
 
 while timer_timeout.time() < timeout:
     if distance_sensor.distance() < 100:
@@ -48,7 +48,9 @@ while timer_timeout.time() < timeout:
         distance_sensor.lights.off()
         mvp.drive_motor.run(speed=800)
 
-    if timer_data.time() > interval:
+    dtime = timer_data.time() 
+    if dtime > interval:
+        print('delta_time:', dtime, 'ms')
+        timer_data.reset()
         print('distance:', distance_sensor.distance(), 'mm')
         print('acceleration:', mvp.hub.imu.acceleration(), 'm/s**2')
-        timer_data.reset()

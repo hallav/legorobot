@@ -5,6 +5,7 @@ import logging
 import sys
 import asyncio
 from contextlib import redirect_stdout
+import datetime 
 
 async def main():
     address = await find_device('Pybricks Hub')
@@ -20,7 +21,9 @@ async def main():
     await hub.disconnect()
 
 if __name__ == "__main__":
-    with open('mvp_data.log', 'w') as file:
+    rundatetime = datetime.datetime.today().isoformat(timespec='seconds')
+    logfilename=f'mvp_log_{rundatetime}.log'
+    with open(logfilename, 'w') as file:
         with redirect_stdout(file):
             logging.basicConfig(stream=sys.stderr, level=logging.ERROR)
             asyncio.run(main())
