@@ -22,7 +22,7 @@ async def main():
 
 if __name__ == "__main__":
     rundatetime = datetime.datetime.today().isoformat(timespec='seconds')
-    logfilename=f'mvp_log_{rundatetime}.log'
+    logfilename=f'mvp_log_{rundatetime}.log'.replace(':', '-')
     with open(logfilename, 'w') as file:
         with redirect_stdout(file):
             logging.basicConfig(stream=sys.stderr, level=logging.ERROR)

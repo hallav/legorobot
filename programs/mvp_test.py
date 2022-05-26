@@ -34,23 +34,35 @@ distance_sensor = UltrasonicSensor(Port.E)
 mvp.steer_motor.run_angle(speed=350, rotation_angle=-50)
 mvp.drive_motor.run(speed=800) #, rotation_angle=32 * 360)
 
-timer_timeout = StopWatch()
-timeout = 30 * 1000 # ms
-
-timer_data = StopWatch()
+timer = StopWatch()
+timeout = 60 * 1000 # ms
 interval = 0.1 * 1000 # ms
 
-while timer_timeout.time() < timeout:
-    if distance_sensor.distance() < 100:
-        distance_sensor.lights.on(100)
-        mvp.drive_motor.stop()
-    else:
-        distance_sensor.lights.off()
-        mvp.drive_motor.run(speed=800)
+current_time = 0
+previous_readout = 0
+is_running = False
 
-    dtime = timer_data.time() 
-    if dtime > interval:
-        print('delta_time:', dtime, 'ms')
-        timer_data.reset()
-        print('distance:', distance_sensor.distance(), 'mm')
-        print('acceleration:', mvp.hub.imu.acceleration(), 'm/s**2')
+while current_time < timeout:
+    distance = distance_sensor.distance()
+    if distance < 100:
+        if is_running:
+            distance_sensor.lights.on(100)
+            mvp.drive_motor.stop()
+            is_running = False
+    else:
+        if not is_running:
+            distance_sensor.lights.off()
+            mvp.drive_motor.run(speed=800)
+            is_running = True
+
+    
+    if current_time - previous_readout > interval:
+        # to get all attributes of e.g. imu call dir(mvp.hub.imu)
+        print('time: {} ms\n'.format(current_time),
+              'distance: {} mm\n'.format(distance),
+              'acceleration: {} m/s**2\n'.format(mvp.hub.imu.acceleration()),
+              'angular_velocity: {} degree/s\n'.format(mvp.hub.imu.angular_velocity())
+        )
+        previous_readout = current_time
+
+    current_time = timer.time()
